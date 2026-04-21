@@ -60,7 +60,20 @@ const catalogItems = [
     id: "machine-learning-basics",
     number: "08",
     name: "머신러닝 기초",
-    description: "지도학습, 비지도학습, 모델 평가, 과적합을 정리합니다.",
+    description: "AI 시대의 데이터 분석, 데이터마이닝, 머신러닝, 통계적 학습의 기본 개념을 정리합니다.",
+    sections: [
+      {
+        number: "1",
+        title: "기초",
+        notes: [
+          {
+            title: "AI 시대의 데이터 분석과 머신러닝 개요",
+            href: "notes/machine-learning-basics/foundation.md",
+            summary: "DM_Lecure1.pdf의 핵심 내용을 바탕으로 데이터마이닝, 머신러닝, 통계적 학습의 관계를 정리합니다.",
+          },
+        ],
+      },
+    ],
     notes: [],
   },
 ];
@@ -187,6 +200,10 @@ function renderCategory(categoryId) {
   }
 
   noteEl.className = "catalog-view";
+  const sections = Array.isArray(category.sections) ? category.sections : [];
+  const flatNotes = Array.isArray(category.notes) ? category.notes : [];
+  const hasContent = sections.length || flatNotes.length;
+
   noteEl.innerHTML = `
     <div class="category-header">
       <p class="catalog-kicker">${category.number}</p>
@@ -194,19 +211,44 @@ function renderCategory(categoryId) {
       <p class="catalog-description">${category.description}</p>
     </div>
     ${
-      category.notes.length
-        ? `<div class="note-list">
-            ${category.notes
-              .map(
-                (note) => `
-                  <a class="note-list-item" href="#${note.href}">
-                    <strong>${note.title}</strong>
-                    <span>${note.summary}</span>
-                  </a>
-                `,
-              )
-              .join("")}
-          </div>`
+      hasContent
+        ? `${sections
+            .map(
+              (section) => `
+                <section class="category-section">
+                  <h2>${section.number}. ${section.title}</h2>
+                  <div class="note-list">
+                    ${section.notes
+                      .map(
+                        (note) => `
+                          <a class="note-list-item" href="#${note.href}">
+                            <strong>${note.title}</strong>
+                            <span>${note.summary}</span>
+                          </a>
+                        `,
+                      )
+                      .join("")}
+                  </div>
+                </section>
+              `,
+            )
+            .join("")}
+          ${
+            flatNotes.length
+              ? `<div class="note-list">
+                  ${flatNotes
+                    .map(
+                      (note) => `
+                        <a class="note-list-item" href="#${note.href}">
+                          <strong>${note.title}</strong>
+                          <span>${note.summary}</span>
+                        </a>
+                      `,
+                    )
+                    .join("")}
+                </div>`
+              : ""
+          }`
         : `<div class="empty-note">아직 노트가 없습니다. 이 과목의 첫 글을 나에게 부탁하면 여기에 연결해둘 수 있어요.</div>`
     }
   `;

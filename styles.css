@@ -241,6 +241,17 @@ a {
   gap: 12px;
 }
 
+.category-section {
+  margin-top: 32px;
+}
+
+.category-section h2 {
+  margin: 0 0 14px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  font-size: 22px;
+}
+
 .note-list-item {
   display: grid;
   gap: 8px;
