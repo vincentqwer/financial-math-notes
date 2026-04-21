@@ -567,26 +567,3 @@ $$
 모델이 너무 단순하면 중요한 구조를 잡지 못해서 bias가 커진다. 모델이 너무 복잡하면 training data의 작은 변동이나 noise까지 따라가서 variance가 커진다.
 
 따라서 좋은 모델은 bias와 variance 사이에서 적절한 균형을 찾는 모델이다.
-
-## 18. KNN 회귀에서의 Bias-Variance
-
-KNN regression에서도 \(K\)에 따라 bias와 variance가 달라진다.
-
-![KNN bias variance](../../assets/lecture2/knn-bias-variance.png)
-
-\(K\)가 작으면 가까운 소수의 점만 사용하므로 모델이 매우 flexible해진다. 이 경우 bias는 낮지만 variance가 커질 수 있다.
-
-\(K\)가 크면 많은 점을 평균내므로 모델이 smooth해진다. 이 경우 variance는 낮아질 수 있지만 bias가 커질 수 있다.
-
-각 데이터셋마다 bias와 variance가 변하는 속도가 다르기 때문에, 최적의 flexibility는 데이터셋마다 다르다.
-
-## 요약
-
-- 지도학습은 \(Y = f(X) + \epsilon\)에서 \(f\)를 추정하는 문제다.
-- \(f\)를 추정하는 목적은 prediction과 inference로 나뉜다.
-- 예측 오차에는 줄일 수 있는 reducible error와 줄일 수 없는 irreducible error가 있다.
-- 모수적 방법은 \(f\)의 형태를 가정하고 parameters를 추정한다.
-- 비모수적 방법은 \(f\)의 형태를 가정하지 않지만 더 많은 데이터가 필요하다.
-- KNN regression은 가까운 관측치들의 평균으로 예측한다.
-- training MSE가 아니라 test MSE가 모델의 예측력을 평가하는 기준이다.
-- 모델 선택의 핵심은 bias와 variance 사이의 균형이다.
