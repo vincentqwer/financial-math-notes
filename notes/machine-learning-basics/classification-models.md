@@ -464,7 +464,88 @@ $$
 \log P(Y=k\mid X=x)
 $$
 
-공통으로 들어가는 항을 제거하면 다음 discriminant function을 얻는다.
+Bayes theorem을 대입하면,
+
+$$
+\log P(Y=k\mid X=x)
+=
+\log
+\frac{
+f_k(x)\pi_k
+}{
+\sum_{j=1}^{K}f_j(x)\pi_j
+}
+$$
+
+분모는 \(k\)에 따라 달라지지 않는 공통항이므로, class를 고를 때는 다음을 최대화하면 된다.
+
+$$
+=
+\log\{f_k(x)\pi_k\}+C_1
+$$
+
+LDA의 normal density를 대입하면,
+
+$$
+=
+\log
+\left[
+\pi_k
+\frac{1}
+{(2\pi)^{p/2}|\Sigma|^{1/2}}
+\exp\left\{
+-
+\frac{1}{2}
+(x-\mu_k)^\top\Sigma^{-1}(x-\mu_k)
+\right\}
+\right]
++C_1
+$$
+
+\(k\)와 관계없는 상수를 다시 묶으면,
+
+$$
+=
+\log\pi_k
+-
+\frac{1}{2}
+(x-\mu_k)^\top\Sigma^{-1}(x-\mu_k)
++C_2
+$$
+
+이제 quadratic form을 전개한다.
+
+$$
+(x-\mu_k)^\top\Sigma^{-1}(x-\mu_k)
+=
+x^\top\Sigma^{-1}x
+-
+2x^\top\Sigma^{-1}\mu_k
++
+\mu_k^\top\Sigma^{-1}\mu_k
+$$
+
+따라서
+
+$$
+\log P(Y=k\mid X=x)
+=
+\log\pi_k
+-
+\frac{1}{2}
+\left(
+x^\top\Sigma^{-1}x
+-
+2x^\top\Sigma^{-1}\mu_k
++
+\mu_k^\top\Sigma^{-1}\mu_k
+\right)
++C_2
+$$
+
+\(x^\top\Sigma^{-1}x\)도 \(k\)에 관계없는 공통항이므로 제거할 수 있다.
+
+결국 다음 discriminant function을 얻는다.
 
 $$
 \delta_k(x)
@@ -507,6 +588,8 @@ $$
 x_i
 $$
 
+\(\hat\pi_k\)는 전체 데이터 중 class \(k\)가 차지하는 비율이고, \(\hat\mu_k\)는 class \(k\)에 속한 관측치들의 평균벡터다.
+
 공통 covariance matrix는 다음과 같이 추정한다.
 
 $$
@@ -517,6 +600,8 @@ $$
 \sum_{y_i=k}
 (x_i-\hat\mu_k)(x_i-\hat\mu_k)^\top
 $$
+
+\(\hat\Sigma\)는 각 class 안에서 평균을 뺀 편차들을 모아 계산한 pooled covariance matrix다. LDA는 모든 class가 같은 covariance matrix \(\Sigma\)를 공유한다고 가정하므로, class별 covariance를 따로 쓰지 않고 하나로 합쳐서 추정한다.
 
 두 class \(l,m\)의 decision boundary는 다음 집합이다.
 
