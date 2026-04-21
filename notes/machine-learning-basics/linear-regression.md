@@ -1027,6 +1027,8 @@ $$
 
 \(r=0.1\), 즉 전체 unit volume의 10%를 잡는다고 하자.
 
+<div data-curse-dimensionality-demo></div>
+
 $$
 p=1:\quad e_1(0.1)=0.1
 $$

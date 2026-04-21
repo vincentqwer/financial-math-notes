@@ -840,6 +840,215 @@ input[type="range"] {
   }
 }
 
+.curse-demo {
+  margin: 34px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.1);
+}
+
+.curse-demo__head {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.curse-demo__head h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.curse-demo__head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.curse-demo__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.8fr);
+  gap: 18px;
+  padding: 18px;
+}
+
+.curse-demo svg {
+  width: 100%;
+  min-height: 360px;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(226, 232, 240, 0.4) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(226, 232, 240, 0.4) 1px, transparent 1px),
+    #f8fafc;
+  background-size: 34px 34px;
+}
+
+.curse-title {
+  fill: #0f172a;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.curse-formula {
+  fill: #334155;
+  font-family: "Noto Serif KR", serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.curse-axis {
+  stroke: #0f172a;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.curse-selected {
+  stroke: #ef4444;
+  stroke-width: 12;
+  stroke-linecap: round;
+  animation: curse-grow 680ms ease both;
+}
+
+.curse-point {
+  fill: #ef4444;
+  stroke: #ffffff;
+  stroke-width: 3;
+}
+
+.curse-unit {
+  fill: rgba(255, 255, 255, 0.82);
+  stroke: #0f172a;
+  stroke-width: 3;
+}
+
+.curse-cube-face {
+  fill: rgba(226, 232, 240, 0.48);
+  stroke: #334155;
+  stroke-width: 2;
+}
+
+.curse-selected-area {
+  fill: rgba(239, 68, 68, 0.28);
+  stroke: #ef4444;
+  stroke-width: 3;
+  animation: curse-pop 520ms ease both;
+}
+
+.curse-selected-area--side {
+  fill: rgba(248, 113, 113, 0.2);
+}
+
+.curse-axis-label {
+  fill: #475569;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.curse-measure-label {
+  fill: #dc2626;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.curse-warning-label {
+  fill: #991b1b;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.curse-demo__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 8px;
+  background: #111827;
+  color: #f8fafc;
+}
+
+.curse-demo__panel strong {
+  font-size: 21px;
+}
+
+.curse-demo__panel p {
+  margin: 0;
+  color: #dbeafe;
+  line-height: 1.6;
+}
+
+.curse-demo__panel small {
+  color: #bfdbfe;
+  font-weight: 900;
+}
+
+.curse-demo__bar {
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.curse-demo__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  animation: curse-bar 620ms ease both;
+}
+
+.curse-demo__controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: auto;
+}
+
+.curse-demo__controls button {
+  min-height: 42px;
+  border: 1px solid rgba(219, 234, 254, 0.28);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0f2fe;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.curse-demo__controls button.active {
+  background: #ef4444;
+  border-color: #fecaca;
+  color: #ffffff;
+}
+
+@keyframes curse-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+    transform-origin: center;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes curse-grow {
+  from {
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+  }
+  to {
+    stroke-dasharray: 320;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes curse-bar {
+  from {
+    width: 0;
+  }
+}
+
 @media (max-width: 1100px) {
   .site-shell {
     grid-template-columns: 230px minmax(0, 1fr);
@@ -889,11 +1098,16 @@ input[type="range"] {
 
   .affine-stage,
   .slider-grid,
-  .orthogonal-demo__footer {
+  .orthogonal-demo__footer,
+  .curse-demo__body {
     grid-template-columns: 1fr;
   }
 
   .orthogonal-board svg {
     min-height: 320px;
+  }
+
+  .curse-demo__controls {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
