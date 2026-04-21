@@ -1,0 +1,592 @@
+---
+title: 선형회귀
+date: 2026-04-22
+level: 머신러닝 입문
+tags:
+  - machine-learning
+  - supervised-learning
+  - linear-regression
+  - least-squares
+  - knn
+prerequisites:
+  - 지도학습의 기본 형태
+  - 모수적 방법과 비모수적 방법
+  - Bias-Variance Trade-off
+review:
+  - 선형회귀에서 \(f(X)\)는 어떤 형태로 가정되는가?
+  - RSS를 최소화한다는 것은 무엇을 의미하는가?
+  - confidence interval과 prediction interval은 어떻게 다른가?
+related:
+  - 지도학습
+  - KNN 회귀
+  - Curse of Dimensionality
+---
+
+# 선형회귀 (Linear Regression)
+
+선형회귀는 지도학습에 속하는 대표적인 **parametric method**다.
+
+많은 지도학습 방법들은 선형회귀를 일반화하거나 확장한 모형으로 볼 수 있다.
+
+## 1. Linear Regression Model
+
+선형회귀에서는 regression function을 다음과 같이 둔다.
+
+$$
+f(X)
+=
+\beta_0+\sum_{j=1}^{p}\beta_jX_j
+$$
+
+이 함수는 \(X\)로부터 \(Y\)를 예측하기 위한 함수다.
+
+$$
+f(X)=E(Y\mid X)
+$$
+
+즉 \(f\)는 \(X\)가 주어졌을 때 \(Y\)의 조건부 평균을 나타내는 regression function이다.
+
+## 2. Sources of Inputs
+
+선형회귀에 들어가는 input은 단순한 원자료 변수만 의미하지 않는다. 다음과 같은 형태도 input으로 사용할 수 있다.
+
+- Quantitative input
+- Quantitative input의 변환
+- Polynomial representation을 위한 basis expansion
+- Qualitative variable의 dummy coding
+- Input 사이의 interaction
+
+예를 들어 quantitative input은 다음처럼 변환할 수 있다.
+
+$$
+\log X,\qquad X^2,\qquad \sqrt{X}
+$$
+
+Polynomial representation은 하나의 변수 \(X\)에서 여러 basis를 만드는 방식이다.
+
+$$
+X_1=X,\qquad X_2=X^2,\qquad X_3=X^3,\qquad \dots
+$$
+
+Interaction은 두 input을 곱해서 새로운 input을 만드는 것이다.
+
+$$
+X_3=X_1X_2
+$$
+
+## 3. Least Square Estimation
+
+선형회귀에서 추정해야 하는 parameter는 다음 벡터다.
+
+$$
+\beta
+=
+(\beta_0,\beta_1,\dots,\beta_p)^\top
+$$
+
+예측값은 다음과 같이 쓴다.
+
+$$
+\hat y_i
+=
+\hat\beta_0+\sum_{j=1}^{p}\hat\beta_jx_{ij}
+\approx y_i
+$$
+
+Least squares는 실제값 \(y_i\)와 예측값 \(\hat y_i\)의 차이를 제곱해서 더한 값인 RSS를 최소화하는 \(\beta\)를 찾는 방법이다.
+
+$$
+RSS
+=
+\sum_{i=1}^{n}(y_i-\hat y_i)^2
+$$
+
+$$
+=
+\sum_{i=1}^{n}
+\left(
+y_i-\hat\beta_0-\sum_{j=1}^{p}\hat\beta_jx_{ij}
+\right)^2
+$$
+
+행렬 표기로 쓰면 다음과 같다.
+
+$$
+RSS
+=
+(y-X\hat\beta)^\top(y-X\hat\beta)
+$$
+
+여기서 \(X\)는 \(n\times(p+1)\) design matrix다.
+
+Least square estimator는 다음과 같다.
+
+$$
+\hat\beta
+=
+(X^\top X)^{-1}X^\top Y
+$$
+
+## 4. LSE의 가정
+
+특별한 가정이 없어도 LSE 자체는 계산할 수 있다. 하지만 분산, 검정, 신뢰구간을 해석하려면 추가 가정이 필요하다.
+
+### 기본 가정
+
+1. \(Y_i\)들은 서로 uncorrelated이고, \(\operatorname{Var}(Y_i)=\sigma^2\)
+2. \(X=(X_1,\dots,X_p)^\top\)는 fixed value
+
+이는 오차항으로 쓰면 다음과 같다.
+
+$$
+\epsilon_i\text{들은 independent이고 }
+\operatorname{Var}(\epsilon_i)=\sigma^2
+$$
+
+위 가정에서,
+
+$$
+\operatorname{Var}(\hat\beta)
+=
+\sigma^2(X^\top X)^{-1}
+$$
+
+\(\sigma^2\)의 추정량은 다음과 같다.
+
+$$
+\hat\sigma^2
+=
+\frac{1}{n-p-1}
+\sum_{i=1}^{n}(y_i-\hat y_i)^2
+$$
+
+그리고
+
+$$
+E(\hat\sigma^2)=\sigma^2
+$$
+
+### 정규성 가정
+
+추가로 다음을 가정한다.
+
+$$
+\epsilon\sim iid\ N(0,\sigma^2)
+$$
+
+그러면
+
+$$
+\hat\beta
+\sim
+MVN\left(\beta,\sigma^2(X^\top X)^{-1}\right)
+$$
+
+또한
+
+$$
+\frac{(n-p-1)\hat\sigma^2}{\sigma^2}
+\sim
+\chi^2_{n-p-1}
+$$
+
+\(\hat\beta\)와 \(\hat\sigma^2\)는 independent다.
+
+## 5. 개별 계수에 대한 가설검정
+
+개별 coefficient \(\beta_j\)의 partial effect를 검정하고 싶을 때 다음 가설을 둔다.
+
+$$
+H_0:\beta_j=0
+\qquad\text{vs.}\qquad
+H_1:\beta_j\neq0
+$$
+
+\((X^\top X)^{-1}\)의 \(j\)번째 diagonal element를 \(v_j\)라고 하자.
+
+그러면
+
+$$
+\hat\beta_j
+\sim
+N(\beta_j,\sigma^2v_j)
+$$
+
+따라서
+
+$$
+\frac{\hat\beta_j-\beta_j}{\sigma\sqrt{v_j}}
+\sim
+N(0,1)
+$$
+
+\(H_0\) 아래에서 test statistic은 다음과 같다.
+
+$$
+t_j
+=
+\frac{\hat\beta_j}{\hat\sigma\sqrt{v_j}}
+\sim
+t_{n-p-1}
+$$
+
+유의수준 \(\alpha\)에서
+
+$$
+|t_j|>t_{1-\alpha/2,\ n-p-1}
+$$
+
+이면 \(H_0\)를 기각한다.
+
+## 6. 계수 그룹에 대한 F-test
+
+여러 coefficient를 한 번에 검정할 수도 있다.
+
+예를 들어 \(k\)개의 level을 가진 categorical variable은 보통 \(k-1\)개의 dummy variable로 표현된다.
+
+이때 다음처럼 여러 coefficient가 동시에 0인지 검정할 수 있다.
+
+$$
+H_0:\beta_{j+1}=\beta_{j+2}=\cdots=\beta_{j+l}=0
+$$
+
+$$
+H_1:\text{At least one of }(\beta_{j+1},\dots,\beta_{j+l})\neq0
+$$
+
+Full model은 다음과 같다.
+
+$$
+Y
+=
+\beta_0+\beta_1X_1+\cdots+\beta_pX_p+\epsilon
+$$
+
+Reduced model은 검정하려는 변수 묶음을 제거한 모형이다.
+
+$$
+Y
+=
+\beta_0+\beta_1X_1+\cdots+\beta_jX_j
++\beta_{j+l+1}X_{j+l+1}
++\cdots+\beta_pX_p+\epsilon
+$$
+
+검정통계량은 다음과 같다.
+
+$$
+F
+=
+\frac{(RSS_R-RSS_F)/l}{RSS_F/(n-p-1)}
+\sim
+F_{l,n-p-1}
+$$
+
+여기서 \(RSS_F\)는 full model의 RSS이고, \(RSS_R\)는 reduced model의 RSS다.
+
+만약
+
+$$
+F>F_{1-\alpha,\ l,\ n-p-1}
+$$
+
+이면 \(H_0\)를 기각한다.
+
+## 7. 전체 계수에 대한 F-test
+
+모든 slope coefficient가 0인지 검정할 수도 있다.
+
+$$
+H_0:\beta_1=\cdots=\beta_p=0
+$$
+
+$$
+H_1:\text{At least one of }(\beta_1,\dots,\beta_p)\neq0
+$$
+
+검정통계량은 다음과 같다.
+
+$$
+F
+=
+\frac{(TSS-RSS)/p}{RSS/(n-p-1)}
+$$
+
+여기서
+
+$$
+TSS
+=
+\sum_{i=1}^{n}(y_i-\bar y)^2
+$$
+
+이다.
+
+만약
+
+$$
+F>F_{1-\alpha,\ p,\ n-p-1}
+$$
+
+이면 \(H_0\)를 기각한다.
+
+각 \(\beta_j\)에 대한 t-test를 보기 전에 전체 F-test를 먼저 확인하는 것이 좋다.
+
+예를 들어 \(p=100\)이고 실제로는 모든 계수가 0이라고 하자.
+
+$$
+\beta_1=\cdots=\beta_{100}=0
+$$
+
+각 predictor에 대해 유의수준 0.05로 t-test를 100번 하면, 우연히 약 5개 정도는 유의하게 나올 수 있다.
+
+실제로 significant predictor가 5개보다 많이 나올 확률은 대략 다음과 같다.
+
+$$
+1-
+\sum_{x=0}^{5}
+{100\choose x}
+(0.05)^x(0.95)^{100-x}
+\approx
+0.384
+$$
+
+반면 F-test는 predictor 개수와 관계없이 잘못된 결론을 낼 확률을 5%로 통제한다.
+
+## 8. Gauss-Markov Theorem
+
+\(\tilde\beta=Cy\)이고,
+
+$$
+E(\tilde\beta)=\beta
+$$
+
+라고 하자. 즉 \(\tilde\beta\)는 linear unbiased estimator다.
+
+Gauss-Markov theorem은 다음을 말한다.
+
+$$
+\operatorname{Var}(\hat\beta)
+\leq
+\operatorname{Var}(\tilde\beta)
+$$
+
+Gauss-Markov theorem의 가정은 다음과 같다.
+
+- \(E(\epsilon_i)=0\)
+- \(\operatorname{Var}(\epsilon_i)=\sigma^2<\infty\)
+- \(\epsilon_i\)들은 independent
+
+즉 LSE \(\hat\beta\)는 **BLUE**, Best Linear Unbiased Estimator다.
+
+다만 biased estimator 중에는 LSE보다 더 작은 MSE를 가지는 estimator가 존재할 수 있다.
+
+## 9. Model Fit
+
+Model fit은 training data를 기준으로 모델이 얼마나 잘 맞는지를 평가하는 것이다.
+
+대표적인 measure는 다음 두 가지다.
+
+- \(R^2\)
+- Residual Standard Error, RSE
+
+\(R^2\)는 다음과 같다.
+
+$$
+R^2
+=
+1-\frac{RSS}{TSS}
+$$
+
+RSE는 다음과 같다.
+
+$$
+RSE
+=
+\sqrt{\frac{RSS}{n-p-1}}
+$$
+
+Predictor 개수가 증가하면 \(R^2\)는 증가하는 경향이 있다.
+
+## 10. Prediction
+
+선형회귀에서 prediction에는 여러 종류의 uncertainty가 있다.
+
+## 11. Confidence Interval
+
+첫 번째 uncertainty는 \(\hat Y\)와 \(f(X)=X^\top\beta\) 사이의 uncertainty다.
+
+이는 \(\hat\beta\) 때문에 생기는 variation, 즉 model variance다.
+
+새 관측치 \(x\)에서 예측 평균은 다음과 같다.
+
+$$
+\hat Y
+=
+x^\top\hat\beta
+$$
+
+그리고
+
+$$
+E(\hat Y)
+=
+x^\top\beta
+=
+f(x)
+$$
+
+$$
+\operatorname{Var}(\hat Y)
+=
+\sigma^2x^\top(X^\top X)^{-1}x
+$$
+
+\((1-\alpha)100\%\) confidence interval은 다음과 같다.
+
+$$
+\hat Y
+\pm
+t_{1-\alpha/2,\ n-p-1}
+\hat\sigma
+\sqrt{
+x^\top(X^\top X)^{-1}x
+}
+$$
+
+이 uncertainty와 model bias는 reducible error에 해당한다.
+
+## 12. Prediction Interval
+
+두 번째 uncertainty는 실제 \(Y\)와 예측값 \(\hat Y\) 사이의 uncertainty다.
+
+Prediction interval은 reducible error와 irreducible error를 모두 포함한다.
+
+Test observation을 다음과 같이 둔다.
+
+$$
+x_0
+=
+(1,x_{01},\dots,x_{0p})^\top
+$$
+
+예측값은 다음과 같다.
+
+$$
+\hat Y_0
+=
+x_0^\top\hat\beta
+$$
+
+분산은 다음과 같다.
+
+$$
+\operatorname{Var}(\hat Y_0)
+=
+\sigma^2+\sigma^2x_0^\top(X^\top X)^{-1}x_0
+$$
+
+$$
+=
+\sigma^2\left(1+x_0^\top(X^\top X)^{-1}x_0\right)
+$$
+
+\((1-\alpha)100\%\) prediction interval은 다음과 같다.
+
+$$
+\hat Y_0
+\pm
+t_{1-\alpha/2,\ n-p-1}
+\hat\sigma
+\sqrt{
+1+x_0^\top(X^\top X)^{-1}x_0
+}
+$$
+
+Confidence interval은 \(E(Y\mid X=x)\)의 uncertainty를 다루고, prediction interval은 실제 새 관측치 \(Y_0\)까지 포함하므로 더 넓다.
+
+## 13. K-Nearest Neighbor Regression
+
+KNN regression은 비모수적 방법이다.
+
+즉 \(f(x)\)의 구체적인 함수 형태를 미리 가정하지 않는다.
+
+목표 지점 \(x_0\)에서 KNN regression의 예측값은 다음과 같다.
+
+$$
+\hat f(x_0)
+=
+\frac{1}{K}
+\sum_{x_i\in N_K(x_0)}
+y_i
+$$
+
+여기서 \((x_i,y_i)\)는 training data이고, \(N_K(x_0)\)는 \(x_0\)의 neighborhood다.
+
+KNN regression이 linear regression보다 더 선호될 수 있는 상황은 다음과 같다.
+
+- True \(f(x)\)가 nonlinear인 경우
+- Goal이 inference보다 prediction에 가까운 경우
+- Dimension \(p\)가 작은 경우
+
+## 14. Curse of Dimensionality
+
+Curse of dimensionality는 차원이 커질수록 local method가 어려워지는 현상을 말한다.
+
+예를 들어 input space가 \(p\)-dimensional unit hypercube에 uniformly distributed되어 있다고 하자.
+
+unit volume의 fraction \(r\)만큼을 포착하기 위해 hyper cubical neighborhood를 만든다고 하면, expected edge length는 다음과 같다.
+
+$$
+e_p(r)=r^{1/p}
+$$
+
+\(r=0.1\), 즉 전체 unit volume의 10%를 잡는다고 하자.
+
+$$
+p=1:\quad e_1(0.1)=0.1
+$$
+
+$$
+p=2:\quad e_2(0.1)=(0.1)^{1/2}\approx0.316
+$$
+
+$$
+p=3:\quad e_3(0.1)=(0.1)^{1/3}\approx0.464
+$$
+
+$$
+p=10:\quad e_{10}(0.1)=(0.1)^{1/10}\approx0.794
+$$
+
+즉 10차원에서 local average를 만들기 위해 데이터의 10%가 필요하다면, 각 predictor의 range에서 약 79.4%를 덮어야 한다.
+
+이렇게 되면 더 이상 local한 평균이라고 보기 어렵다.
+
+## 15. 차원이 커질 때 생기는 문제
+
+\(r\)을 줄이면 더 적은 관측치만 사용해서 평균을 내게 된다.
+
+하지만 이 경우 fit의 variance가 커진다.
+
+같은 density를 유지한다고 생각하면,
+
+$$
+p=1,\ n=100
+\quad\equiv\quad
+p=10,\ n=100^{10}
+$$
+
+즉 차원이 커질수록 같은 밀도의 데이터를 확보하기 위해 필요한 표본 수가 폭발적으로 증가한다.
+
+## 요약
+
+- 선형회귀는 지도학습의 대표적인 parametric method다.
+- Least squares는 RSS를 최소화하는 \(\hat\beta\)를 찾는다.
+- 정규성 가정 아래에서 t-test와 F-test를 통해 coefficient를 검정할 수 있다.
+- Gauss-Markov theorem에 따르면 LSE는 BLUE다.
+- \(R^2\)와 RSE는 training data 기준의 model fit measure다.
+- Confidence interval은 평균 반응 \(E(Y\mid X=x)\)의 불확실성을 나타낸다.
+- Prediction interval은 실제 새 관측치 \(Y_0\)의 불확실성까지 포함한다.
+- KNN regression은 함수 형태를 가정하지 않는 nonparametric method다.
+- 차원이 커질수록 KNN 같은 local method는 curse of dimensionality 문제를 겪는다.

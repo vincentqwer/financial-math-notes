@@ -95,6 +95,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "4",
+        title: "선형회귀",
+        notes: [
+          {
+            title: "선형회귀",
+            href: "notes/machine-learning-basics/linear-regression.md",
+            summary: "DM_Lecure3의 내용을 바탕으로 선형회귀, 최소제곱추정, 가설검정, 예측구간, KNN 회귀와 차원의 저주를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
