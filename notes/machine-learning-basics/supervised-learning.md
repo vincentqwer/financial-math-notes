@@ -397,7 +397,7 @@ $$
 
 ### Restrictive model vs flexible model
 
-![Flexibility and interpretability trade-off](../../assets/lecture2/flexibility-interpretability-source.png)
+![Flexibility and interpretability trade-off](assets/lecture2/flexibility-interpretability-source.png)
 
 $$
 Y=\beta_0+\beta_1X_1+\beta_2X_2+\cdots+\beta_pX_p+\epsilon
@@ -504,7 +504,7 @@ $$
 
 Test data는 모델 학습에 사용하지 않은 관측치다.
 
-![Training and test MSE](../../assets/lecture2/training-test-mse.png)
+![Training and test MSE](assets/lecture2/training-test-mse.png)
 
 Test MSE가 낮을수록 더 좋은 모델이다.
 
@@ -562,7 +562,7 @@ $$
 
 예측 오차는 bias와 variance의 균형 문제로 이해할 수 있다.
 
-![Bias variance curve](../../assets/lecture2/bias-variance-curve.png)
+![Bias variance curve](assets/lecture2/bias-variance-curve.png)
 
 모델이 너무 단순하면 중요한 구조를 잡지 못해서 bias가 커진다. 모델이 너무 복잡하면 training data의 작은 변동이나 noise까지 따라가서 variance가 커진다.
 
