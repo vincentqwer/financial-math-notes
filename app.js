@@ -117,6 +117,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "6",
+        title: "중간 점검 1",
+        notes: [
+          {
+            title: "중간 점검 1",
+            href: "notes/machine-learning-basics/mid-check-1.md",
+            summary: "flexible/inflexible 판단, classification/regression 구분, KNN, Bayes classifier, 선형회귀 계산 문제를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
