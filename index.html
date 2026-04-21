@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vincent's Math Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["$$", "$$"]],
+        },
+        svg: { fontCache: "global" },
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="components/affine-demo.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <aside class="left-rail" aria-label="수학노트 목차">
+        <a class="brand" href="#home">
+          <span class="brand-mark">∑</span>
+          <span>
+            <strong>Vincent's Math Notes</strong>
+            <small>Markdown 기반 수학 정리노트</small>
+          </span>
+        </a>
+
+        <nav class="note-nav">
+          <section>
+            <h2>목차</h2>
+            <a href="#home" data-home-link>전체 목차</a>
+            <a href="#category/matrix-algebra" data-category-link="matrix-algebra">행렬대수학</a>
+            <a href="#category/statistics-intro" data-category-link="statistics-intro">통계학원론</a>
+            <a href="#category/r-programming" data-category-link="r-programming">R프로그래밍</a>
+            <a href="#category/time-series" data-category-link="time-series">시계열분석</a>
+            <a href="#category/financial-statistics" data-category-link="financial-statistics">금융통계학</a>
+            <a href="#category/nonparametric-statistics" data-category-link="nonparametric-statistics">비모수통계</a>
+            <a href="#category/sqld" data-category-link="sqld">SQLD 자격증</a>
+            <a href="#category/machine-learning-basics" data-category-link="machine-learning-basics">머신러닝 기초</a>
+          </section>
+
+          <section>
+            <h2>최근 노트</h2>
+            <a href="#notes/linear-algebra/affine-transformation.md" data-note-link="notes/linear-algebra/affine-transformation.md">아핀 변환</a>
+          </section>
+        </nav>
+      </aside>
+
+      <main class="content-wrap">
+        <header class="topbar">
+          <a href="#notes/linear-algebra/affine-transformation.md">한국어</a>
+          <a href="#notes/linear-algebra/affine-transformation.md">EN</a>
+          <a href="../index.html">Vincent's Home</a>
+        </header>
+
+        <article class="note-article" id="note"></article>
+      </main>
+
+      <aside class="right-rail" aria-label="현재 노트 정보">
+        <section>
+          <h2>Prerequisites</h2>
+          <div id="prerequisites"></div>
+        </section>
+
+        <section>
+          <h2>복습</h2>
+          <div id="review"></div>
+        </section>
+
+        <section>
+          <h2>Related</h2>
+          <div id="related"></div>
+        </section>
+      </aside>
+    </div>
+  </body>
+</html>
