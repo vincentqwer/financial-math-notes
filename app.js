@@ -73,6 +73,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "2",
+        title: "지도학습",
+        notes: [
+          {
+            title: "지도학습",
+            href: "notes/machine-learning-basics/supervised-learning.md",
+            summary: "DM_Lecure2의 슬라이드 흐름을 따라 지도학습의 표기법, 예측/추론, 오차, 모수/비모수 방법, KNN, 모델 평가를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
@@ -82,6 +93,7 @@ const noteEl = document.querySelector("#note");
 const prerequisitesEl = document.querySelector("#prerequisites");
 const reviewEl = document.querySelector("#review");
 const relatedEl = document.querySelector("#related");
+const mathStore = [];
 
 function parseFrontmatter(markdown) {
   if (!markdown.startsWith("---")) {
@@ -118,6 +130,30 @@ function parseFrontmatter(markdown) {
   });
 
   return { data, body };
+}
+
+function protectMath(markdown) {
+  mathStore.length = 0;
+  return markdown
+    .replace(/\$\$[\s\S]*?\$\$/g, (match) => {
+      const token = `@@MATH_BLOCK_${mathStore.length}@@`;
+      mathStore.push(match);
+      return token;
+    })
+    .replace(/\\\([\s\S]*?\\\)/g, (match) => {
+      const token = `@@MATH_INLINE_${mathStore.length}@@`;
+      mathStore.push(match);
+      return token;
+    })
+    .replace(/(?<!\\)\$(?!\$)([\s\S]*?)(?<!\\)\$/g, (match) => {
+      const token = `@@MATH_INLINE_${mathStore.length}@@`;
+      mathStore.push(match);
+      return token;
+    });
+}
+
+function restoreMath(html) {
+  return html.replace(/@@MATH_(?:BLOCK|INLINE)_(\d+)@@/g, (_, index) => mathStore[Number(index)]);
 }
 
 function renderList(target, items) {
@@ -281,7 +317,7 @@ async function loadNote(path) {
 
     const markdown = await response.text();
     const { data, body } = parseFrontmatter(markdown);
-    const html = marked.parse(body, { mangle: false, headerIds: true });
+    const html = restoreMath(marked.parse(protectMath(body), { mangle: false, headerIds: true }));
 
     noteEl.innerHTML = "";
     noteEl.append(renderMeta(data));
@@ -303,6 +339,7 @@ async function loadNote(path) {
     }
 
     window.initAffineDemos?.(noteEl);
+    window.initExpectedTestMseDemos?.(noteEl);
   } catch (error) {
     noteEl.innerHTML = `
       <div class="callout">
