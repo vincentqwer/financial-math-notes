@@ -406,6 +406,7 @@ $$
 $$
 
 ## 8. Linear Discriminant Analysis
+>“각 클래스 중심(μ) 기준으로, 방향 보정(Σ⁻¹)해서 가장 가까운 쪽으로 보낸다”
 
 LDA는 각 class에서 \(X\)가 어떤 분포를 갖는지 가정하고 Bayes theorem을 이용한다.
 
@@ -453,6 +454,56 @@ f_k(x)
 (x-\mu_k)^\top\Sigma^{-1}(x-\mu_k)
 \right]
 $$
+
+
+> ## 다변량 정규분포 예시 (2차원)
+
+
+
+평균벡터:
+\[
+\mu =
+\begin{pmatrix}
+0 \\
+0
+\end{pmatrix}
+\]
+
+공분산행렬:
+\[
+\Sigma =
+\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix}
+\]
+
+### 의미
+
+- \(x_1\)과 \(x_2\)는 서로 독립이다.
+- \(x_1\)의 분산은 1이다.
+- \(x_2\)의 분산도 1이다.
+
+### 이때의 확률밀도함수
+
+\[
+f(x)=\frac{1}{2\pi}\exp\left(-\frac{1}{2}(x_1^2+x_2^2)\right)
+\]
+
+### 직관
+
+이 분포는 원점 \((0,0)\)을 중심으로 동그랗게 퍼져 있다.
+
+- \((0,0)\)에서는 확률밀도가 가장 크다.
+- \((1,1)\)로 가면 확률밀도가 조금 작아진다.
+- \((3,3)\)처럼 멀리 가면 확률밀도가 거의 0에 가까워진다.
+
+즉, 중심에서 멀어질수록 확률밀도는 감소한다.
+
+### 핵심 해석
+
+이 경우 공분산행렬이 항등행렬이기 때문에 모든 방향으로 퍼지는 정도가 같다.
+그래서 등확률선이 타원이 아니라 원이 된다.
 
 ## 9. LDA의 Discriminant Function
 
@@ -601,6 +652,399 @@ $$
 (x_i-\hat\mu_k)(x_i-\hat\mu_k)^\top
 $$
 
+> # 📌 LDA 공통 Covariance Matrix 계산 예시
+
+## 1. 예시 데이터
+
+클래스가 2개이고, 각 데이터는 2차원 벡터라고 하자.
+
+### class 1
+
+$$
+x_1 =
+\begin{pmatrix}
+1 \\
+2
+\end{pmatrix},
+\quad
+x_2 =
+\begin{pmatrix}
+3 \\
+4
+\end{pmatrix}
+$$
+
+### class 2
+
+$$
+x_3 =
+\begin{pmatrix}
+5 \\
+4
+\end{pmatrix},
+\quad
+x_4 =
+\begin{pmatrix}
+7 \\
+6
+\end{pmatrix}
+$$
+
+- 전체 표본 수: $n = 4$
+- 클래스 수: $K = 2$
+- 각 클래스 표본 수: $n_1 = n_2 = 2$
+
+---
+
+## 2. 클래스 평균 계산
+
+### class 1 평균
+
+$$
+\hat{\mu}_1
+=
+\frac{1}{2}
+\left(
+\begin{pmatrix}
+1 \\
+2
+\end{pmatrix}
++
+\begin{pmatrix}
+3 \\
+4
+\end{pmatrix}
+\right)
+=
+\begin{pmatrix}
+2 \\
+3
+\end{pmatrix}
+$$
+
+### class 2 평균
+
+$$
+\hat{\mu}_2
+=
+\frac{1}{2}
+\left(
+\begin{pmatrix}
+5 \\
+4
+\end{pmatrix}
++
+\begin{pmatrix}
+7 \\
+6
+\end{pmatrix}
+\right)
+=
+\begin{pmatrix}
+6 \\
+5
+\end{pmatrix}
+$$
+
+---
+
+## 3. 공통 Covariance 정의
+
+$$
+\hat{\Sigma}
+=
+\frac{1}{n-K}
+\sum_{k=1}^{K}
+\sum_{y_i = k}
+(x_i - \hat{\mu}_k)(x_i - \hat{\mu}_k)^T
+$$
+
+여기서는
+
+$$
+n-K = 4-2 = 2
+$$
+
+따라서
+
+$$
+\hat{\Sigma}
+=
+\frac{1}{2}
+\sum_{k=1}^{2}
+\sum_{y_i = k}
+(x_i - \hat{\mu}_k)(x_i - \hat{\mu}_k)^T
+$$
+
+---
+
+## 4. class 1 계산
+
+### (1) 첫 번째 점
+
+$$
+x_1 - \hat{\mu}_1
+=
+\begin{pmatrix}
+1 \\
+2
+\end{pmatrix}
+-
+\begin{pmatrix}
+2 \\
+3
+\end{pmatrix}
+=
+\begin{pmatrix}
+-1 \\
+-1
+\end{pmatrix}
+$$
+
+$$
+(x_1 - \hat{\mu}_1)(x_1 - \hat{\mu}_1)^T
+=
+\begin{pmatrix}
+-1 \\
+-1
+\end{pmatrix}
+\begin{pmatrix}
+-1 & -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+$$
+
+### (2) 두 번째 점
+
+$$
+x_2 - \hat{\mu}_1
+=
+\begin{pmatrix}
+3 \\
+4
+\end{pmatrix}
+-
+\begin{pmatrix}
+2 \\
+3
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+$$
+
+$$
+(x_2 - \hat{\mu}_1)(x_2 - \hat{\mu}_1)^T
+=
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+$$
+
+### class 1 합
+
+$$
+S_1
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
++
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
+$$
+
+---
+
+## 5. class 2 계산
+
+### (1) 세 번째 점
+
+$$
+x_3 - \hat{\mu}_2
+=
+\begin{pmatrix}
+5 \\
+4
+\end{pmatrix}
+-
+\begin{pmatrix}
+6 \\
+5
+\end{pmatrix}
+=
+\begin{pmatrix}
+-1 \\
+-1
+\end{pmatrix}
+$$
+
+$$
+(x_3 - \hat{\mu}_2)(x_3 - \hat{\mu}_2)^T
+=
+\begin{pmatrix}
+-1 \\
+-1
+\end{pmatrix}
+\begin{pmatrix}
+-1 & -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+$$
+
+### (2) 네 번째 점
+
+$$
+x_4 - \hat{\mu}_2
+=
+\begin{pmatrix}
+7 \\
+6
+\end{pmatrix}
+-
+\begin{pmatrix}
+6 \\
+5
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+$$
+
+$$
+(x_4 - \hat{\mu}_2)(x_4 - \hat{\mu}_2)^T
+=
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+$$
+
+### class 2 합
+
+$$
+S_2
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
++
+\begin{pmatrix}
+1 & 1 \\
+1 & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
+$$
+
+---
+
+## 6. 전체 합
+
+$$
+S_1 + S_2
+=
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
++
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
+=
+\begin{pmatrix}
+4 & 4 \\
+4 & 4
+\end{pmatrix}
+$$
+
+---
+
+## 7. 최종 Covariance
+
+$$
+\hat{\Sigma}
+=
+\frac{1}{2}
+\begin{pmatrix}
+4 & 4 \\
+4 & 4
+\end{pmatrix}
+=
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
+$$
+
+---
+
+## ✅ 최종 결과
+
+$$
+\boxed{
+\hat{\Sigma}
+=
+\begin{pmatrix}
+2 & 2 \\
+2 & 2
+\end{pmatrix}
+}
+$$
+
+---
+
+## 🔥 해석
+
+- 대각 원소: 각 변수의 분산
+- 비대각 원소: 두 변수의 공분산
+
+즉, 이 예시에서는 두 변수 $x_1, x_2$가 같은 방향으로 함께 움직이는 구조를 가진다.
+--
+
 \(\hat\Sigma\)는 각 class 안에서 평균을 뺀 편차들을 모아 계산한 pooled covariance matrix다. LDA는 모든 class가 같은 covariance matrix \(\Sigma\)를 공유한다고 가정하므로, class별 covariance를 따로 쓰지 않고 하나로 합쳐서 추정한다.
 
 두 class \(l,m\)의 decision boundary는 다음 집합이다.
@@ -608,6 +1052,13 @@ $$
 $$
 \{x:\delta_l(x)=\delta_m(x)\}
 $$
+
+$$
+x^T\Sigma^{-1}\mu_l-\frac12\mu_l^T\Sigma^{-1}\mu_l+\log\pi_l
+=
+x^T\Sigma^{-1}\mu_m-\frac12\mu_m^T\Sigma^{-1}\mu_m+\log\pi_m
+$$
+
 
 이를 정리하면,
 
@@ -651,6 +1102,7 @@ $$
 \Sigma_k^{-1}
 (x-\mu_k)
 $$
+
 
 분류 규칙은 동일하다.
 
