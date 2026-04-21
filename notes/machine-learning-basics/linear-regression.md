@@ -368,9 +368,6 @@ $$
 👉 따라서 아직 최적이 아님
 
 
-<div data-orthogonal-residual-demo></div>
-
-> 아래 애니메이션의 “수직”은 산점도에서 위아래로 그은 잔차선이 아니라, \(y\) 를 \(X\) 의 열공간에 투영했을 때 남는 \(e\) 가 그 공간 전체와 직교한다는 뜻이다.
 
 ---
 
@@ -484,6 +481,9 @@ $$
 
 즉, **회귀는 실제 데이터 \(y\) 를 “가능한 예측값들의 공간”인 \(X\) 의 열공간에 투영하는 문제**이고, 잔차는 그 공간에 수직으로 남는다.
 
+<div data-orthogonal-residual-demo></div>
+
+> 아래 애니메이션의 “수직”은 산점도에서 위아래로 그은 잔차선이 아니라, \(y\) 를 \(X\) 의 열공간에 투영했을 때 남는 \(e\) 가 그 공간 전체와 직교한다는 뜻이다.
 
 ## 4. LSE의 가정
 
@@ -714,6 +714,35 @@ $$
 
 ## 8. Gauss-Markov Theorem
 
+
+
+### (1)
+$$
+\tilde{\beta} = Cy,\quad E(\tilde{\beta}) = \beta
+$$
+
+👉 의미:
+
+- $\tilde{\beta}$: 어떤 “다른 추정량”
+- $Cy$: $y$의 선형결합 → **linear**
+- $E(\tilde{\beta}) = \beta$: **bias 없음 → unbiased**
+
+👉 즉:
+
+👉 **“선형 + 불편”인 후보들을 모아놓고 비교하겠다는 뜻**
+
+---
+
+### (2)
+$$
+Var(\hat{\beta}) \le Var(\tilde{\beta})
+$$
+
+👉 의미:
+
+👉 **OLS가 다른 어떤 선형 불편 추정량보다 분산이 작거나 같다**
+
+
 \(\tilde\beta=Cy\)이고,
 
 $$
@@ -722,13 +751,6 @@ $$
 
 라고 하자. 즉 \(\tilde\beta\)는 linear unbiased estimator다.
 
-Gauss-Markov theorem은 다음을 말한다.
-
-$$
-\operatorname{Var}(\hat\beta)
-\leq
-\operatorname{Var}(\tilde\beta)
-$$
 
 Gauss-Markov theorem의 가정은 다음과 같다.
 
@@ -769,13 +791,19 @@ Predictor 개수가 증가하면 \(R^2\)는 증가하는 경향이 있다.
 
 ## 10. Prediction
 
-선형회귀에서 prediction에는 여러 종류의 uncertainty가 있다.
+### (1) Confidence Interval
 
-## 11. Confidence Interval
+> - 우리가 구한 $\hat{\beta}$ 는 데이터마다 달라짐.  그래서 $\hat{Y} = x^T \hat{\beta}$ 도 흔들림
+
 
 첫 번째 uncertainty는 \(\hat Y\)와 \(f(X)=X^\top\beta\) 사이의 uncertainty다.
 
 이는 \(\hat\beta\) 때문에 생기는 variation, 즉 model variance다.
+
+
+
+
+
 
 새 관측치 \(x\)에서 예측 평균은 다음과 같다.
 
@@ -815,7 +843,7 @@ $$
 
 이 uncertainty와 model bias는 reducible error에 해당한다.
 
-## 12. Prediction Interval
+### (2) Prediction Interval
 
 두 번째 uncertainty는 실제 \(Y\)와 예측값 \(\hat Y\) 사이의 uncertainty다.
 
@@ -863,6 +891,103 @@ t_{1-\alpha/2,\ n-p-1}
 $$
 
 Confidence interval은 \(E(Y\mid X=x)\)의 uncertainty를 다루고, prediction interval은 실제 새 관측치 \(Y_0\)까지 포함하므로 더 넓다.
+
+
+## 10-1
+
+새로운 입력값 \(x_0\) 에 대한 실제 반응값은
+
+$$
+Y_0 = x_0^T\beta + \epsilon_0
+$$
+
+로 쓸 수 있다.
+반면, 모델이 주는 예측값은
+
+$$
+\hat Y_0 = x_0^T\hat\beta
+$$
+
+이다.
+
+여기서 중요한 차이는 다음과 같다.
+
+- \(\hat Y_0\): 모델이 추정한 평균값이므로 **모델 자체의 불확실성**만 포함한다.
+- \(Y_0\): 실제 관측값이므로 **모델 불확실성 + 새로운 오차항 \(\epsilon_0\)** 를 모두 포함한다.
+
+따라서 실제 새로운 관측값의 분산은
+
+$$
+Var(Y_0) = Var(\hat Y_0 + \epsilon_0)
+$$
+
+로 볼 수 있다.
+
+이때 \(\hat Y_0\) 와 \(\epsilon_0\) 가 독립이라고 보면,
+
+$$
+Var(Y_0) = Var(\hat Y_0) + Var(\epsilon_0)
+$$
+
+가 된다.
+
+각 항은 다음과 같다.
+
+모델 자체의 불확실성은
+
+$$
+Var(\hat Y_0) = \sigma^2 x_0^T (X^T X)^{-1} x_0
+$$
+
+이고, 새로운 오차항의 분산은
+
+$$
+Var(\epsilon_0)=\sigma^2
+$$
+
+이다.
+
+따라서 이를 합치면
+
+$$
+Var(Y_0)
+=
+\sigma^2 + \sigma^2 x_0^T (X^T X)^{-1} x_0
+$$
+
+이고, \(\sigma^2\) 를 묶으면
+
+$$
+Var(Y_0)
+=
+\sigma^2\left(1 + x_0^T (X^T X)^{-1} x_0\right)
+$$
+
+를 얻는다.
+
+여기서 식 안의
+
+$$
+x_0^T (X^T X)^{-1} x_0
+$$
+
+는 **모델 추정에서 오는 불확실성**을 나타내고,
+
+앞의 \(1\) 은 **새로운 관측 자체가 가지는 랜덤한 오차**를 뜻한다.
+
+즉, 예측의 분산은
+
+$$
+\text{예측 불확실성}
+=
+\text{모델 불확실성}
++
+\text{데이터 자체의 노이즈}
+$$
+
+로 이해할 수 있다.
+
+이 때문에 평균반응에 대한 신뢰구간(confidence interval)보다, 실제 새로운 관측값에 대한 예측구간(prediction interval)이 항상 더 넓어진다.
 
 ## 13. K-Nearest Neighbor Regression
 
