@@ -261,6 +261,22 @@ I(Y \neq \hat Y)\mid X
 I(Y \neq \hat Y)P(Y\mid X)
 $$
 
+> 예를 들면..!
+$$
+=
+I(1 \neq 1)\cdot 0.6 + I(2 \neq 1)\cdot 0.3 + I(3 \neq 1)\cdot 0.1
+$$
+
+$$
+=
+0 \cdot 0.6 + 1 \cdot 0.3 + 1 \cdot 0.1
+$$
+
+$$
+=
+0.4
+$$
+
 예측 class를 \(g\)로 정하면, 맞출 확률은 \(P(Y=g\mid X)\)이고 틀릴 확률은 \(1-P(Y=g\mid X)\)이다.
 
 따라서 error를 최소화하는 것은
@@ -388,7 +404,7 @@ $$
 
 ![KNN classifier example](/financial-math-notes/assets/lecture2/classification/classification-page-33.png)
 
-왼쪽 그림에서는 목표 지점 주변의 가까운 이웃을 확인하고, 오른쪽 그림에서는 각 지점에서 어떤 class로 분류되는지를 decision region으로 보여준다.
+> 왼쪽 그림에서는 목표 지점 주변의 가까운 이웃을 확인하고, 오른쪽 그림에서는 각 지점에서 어떤 class로 분류되는지를 decision region으로 보여준다. 왼쪽에는 파랑색일 확률이 2/3로 더 크므로 파랑색으로 결정. 그 후에 확률이 같아지는 때가 경계선이 된다.
 
 ## 9. Decision Rule과 Decision Boundary
 
