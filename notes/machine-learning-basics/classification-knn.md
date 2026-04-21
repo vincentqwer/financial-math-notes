@@ -106,6 +106,7 @@ $$
 
 variance는 다음처럼 계산된다.
 
+
 $$
 \operatorname{Var}\left(\hat f_K(x_0)\right)
 =
@@ -129,7 +130,7 @@ $$
 \sum_{x_i \in N(x_0)}
 \operatorname{Var}\left[f(x_i)+\epsilon_i\right]
 $$
-
+> (분산 독립 가정)
 $$
 =
 \frac{1}{K^2}K\sigma^2
@@ -197,6 +198,8 @@ Bayes classifier는 다음 정보를 알고 있다고 가정한다.
 - 따라서 \(P(Y=g \mid X=x_0)\), \(g=1,\dots,G\)
 
 여기서 \(G\)는 가능한 class의 개수다.
+
+![Bayes classifier density example](/financial-math-notes/assets/lecture2/classification/bayes-density-example.png)
 
 ### Bayes Classifier Procedure
 
@@ -417,24 +420,18 @@ $$
 k\neq l,\quad k,l=1,\dots,G
 $$
 
-![KNN classifier decision rule](/financial-math-notes/assets/lecture2/classification/classification-page-34.png)
-
 ## 10. \(K\)와 Model Flexibility
 
 KNN classifier에서 \(K\)는 model flexibility를 조절하는 tuning parameter다.
 
-- \(K \uparrow\)이면 flexibility가 감소한다.
-- \(K \downarrow\)이면 flexibility가 증가한다.
+- \(K \uparrow\): flexibility \(\downarrow\), decision boundary는 linear에 가까워진다. 이 경우 variance는 낮고 bias는 높다.
+- \(K \downarrow\): flexibility \(\uparrow\), decision boundary는 더 irregular해진다. 이 경우 variance는 높고 bias는 낮다.
 
-\(K\)가 커질수록 decision boundary는 linear에 가까워지고, variance는 낮아지지만 bias는 높아진다.
-
-\(K\)가 작아질수록 decision boundary는 더 irregular해지고, variance는 높아지지만 bias는 낮아진다.
+> 회귀와 분류 모두에서 성공적인 prediction을 위해서는 적절한 수준의 flexibility를 선택하는 것이 중요하다.
 
 아래 그림은 \(K=1\)과 \(K=100\)의 decision boundary 차이를 보여준다.
 
 ![KNN decision boundary by K](/financial-math-notes/assets/lecture2/classification/classification-page-35.png)
-
-회귀와 분류 모두에서 성공적인 prediction을 위해서는 적절한 수준의 flexibility를 선택하는 것이 중요하다.
 
 ## 요약
 
