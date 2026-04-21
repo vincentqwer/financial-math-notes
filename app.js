@@ -106,6 +106,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "5",
+        title: "분류 모형",
+        notes: [
+          {
+            title: "분류 모형",
+            href: "notes/machine-learning-basics/classification-models.md",
+            summary: "DM_Lecure4의 내용을 바탕으로 logistic regression, multinomial logistic regression, LDA, QDA를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
