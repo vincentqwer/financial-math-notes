@@ -127,6 +127,329 @@ $$
 (X^\top X)^{-1}X^\top Y
 $$
 
+## 3-1 LSE 유도
+
+Least squares 방법은 잔차제곱합(RSS, residual sum of squares)을 최소화하는 $\beta$ 를 찾는 방식이다.
+즉, 실제값 $y$ 와 예측값 $X\beta$ 의 차이가 가장 작아지도록 하는 계수를 구하는 것이다.
+
+먼저 RSS를 행렬 형태로 쓰면
+
+$$
+RSS = (y - X\beta)^T (y - X\beta)
+$$
+
+가 된다.
+
+이를 전개하면
+> 스칼라는 transpose를 취해도 값이 변하지 않는다.
+$$
+(y^T X \beta)^T = \beta^T X^T y
+$$
+
+따라서
+
+$$
+y^T X \beta = \beta^T X^T y
+$$
+
+$$
+RSS = y^T y - 2\beta^T X^T y + \beta^T X^T X \beta
+$$
+
+가 된다.
+
+이제 RSS를 $\beta$ 에 대해 최소화하기 위해 미분하면
+
+$$
+\frac{\partial RSS}{\partial \beta}
+=
+-2X^T y + 2X^T X \beta
+$$
+
+를 얻는다.
+
+최솟값에서는 미분값이 0이 되어야 하므로,
+
+$$
+-2X^T y + 2X^T X \beta = 0
+$$
+
+이고, 이를 정리하면
+
+$$
+X^T X \beta = X^T y
+$$
+
+가 된다. 이 식을 **normal equation** 이라고 한다.
+
+여기서 $X^T X$ 가 가역행렬이면 양변에 $(X^T X)^{-1}$ 를 곱할 수 있으므로,
+
+$$
+\hat{\beta} = (X^T X)^{-1} X^T y
+$$
+
+를 얻는다.
+
+또한 기하학적으로 보면, 실제 반응벡터 $y$ 를 $X$ 의 열공간 위로 투영한 결과가 $X\hat{\beta}$ 이며,
+이때 잔차벡터
+
+$$
+e = y - X\hat{\beta}
+$$
+
+는 $X$ 의 열공간에 직교한다.
+
+즉,
+
+$$
+X^T (y - X\hat{\beta}) = 0
+$$
+
+이고, 이를 다시 정리하면
+
+$$
+X^T X \hat{\beta} = X^T y
+$$
+
+가 되어 동일한 결과를 얻는다.
+
+결론적으로,
+
+$$
+\hat{\beta} = (X^T X)^{-1} X^T y
+$$
+
+는 RSS를 최소화하는 해이자, $y$ 를 $X$ 의 열공간에 가장 가깝게 투영한 결과이다.
+
+## 3-2  선형회귀에서 직교 조건의 직관 (2차원 예시)
+
+
+$$
+x_1^T e = 0,\quad x_2^T e = 0
+\;\Longleftrightarrow\;
+\text{절편/기울기를 더 바꿔도 RSS가 줄어들지 않는 상태}
+$$
+
+---
+
+## 🔥 데이터 (간단한 예시)
+
+$$
+(x_1,y_1)=(1,2),\quad (x_2,y_2)=(2,3),\quad (x_3,y_3)=(3,5)
+$$
+
+$$
+y=
+\begin{bmatrix}
+2\\
+3\\
+5
+\end{bmatrix},
+\qquad
+X=
+\begin{bmatrix}
+1 & 1\\
+1 & 2\\
+1 & 3
+\end{bmatrix}
+$$
+
+열벡터:
+
+$$
+x_1=
+\begin{bmatrix}
+1\\
+1\\
+1
+\end{bmatrix}
+\quad(\text{절편 방향}),
+\qquad
+x_2=
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+\quad(\text{기울기 방향})
+$$
+
+---
+
+## 1️⃣ 일부러 “조금 틀린 직선”
+
+$$
+\hat y = 1 + 1x
+$$
+
+예측값:
+
+$$
+\hat y=
+\begin{bmatrix}
+2\\
+3\\
+4
+\end{bmatrix}
+$$
+
+잔차:
+
+$$
+e=y-\hat y=
+\begin{bmatrix}
+2\\
+3\\
+5
+\end{bmatrix}
+-
+\begin{bmatrix}
+2\\
+3\\
+4
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+$$
+
+---
+
+## 2️⃣ 직교 체크
+
+### 절편 방향
+
+$$
+x_1^T e =
+\begin{bmatrix}
+1 & 1 & 1
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+= 1 \neq 0
+$$
+
+👉 절편을 바꾸면 RSS를 더 줄일 수 있음
+
+---
+
+### 기울기 방향
+
+$$
+x_2^T e =
+\begin{bmatrix}
+1 & 2 & 3
+\end{bmatrix}
+\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+= 3 \neq 0
+$$
+
+👉 기울기를 바꾸면 RSS를 더 줄일 수 있음
+
+---
+
+### 🔥 핵심 해석
+
+잔차가 이렇게 생겼다는 건
+
+- 전체를 위/아래로 움직일 여지가 있음 (절편)
+- 기울기를 더 키울 여지가 있음
+
+👉 따라서 아직 최적이 아님
+
+<div data-orthogonal-residual-demo></div>
+
+---
+
+### 3️⃣ 최적 직선
+
+$$
+\hat y = \frac{1}{3} + \frac{3}{2}x
+$$
+
+예측값:
+
+$$
+\hat y=
+\begin{bmatrix}
+1.833\\
+3.333\\
+4.833
+\end{bmatrix}
+$$
+
+잔차:
+
+$$
+e=
+\begin{bmatrix}
+0.167\\
+-0.333\\
+0.167
+\end{bmatrix}
+$$
+
+---
+
+### 4️⃣ 다시 직교 체크
+
+### 절편 방향
+
+$$
+x_1^T e = 0.167 - 0.333 + 0.167 = 0
+$$
+
+### 기울기 방향
+
+$$
+x_2^T e =
+1(0.167)+2(-0.333)+3(0.167)
+=
+0.167 - 0.666 + 0.501
+= 0
+$$
+
+---
+
+### 💥 결론
+
+$$
+x_1^T e = 0,\quad x_2^T e = 0
+\quad\Rightarrow\quad
+X^T e = 0
+$$
+
+---
+
+### 🔥 진짜 직관
+
+이 상태는
+
+- 절편을 조금 바꿔도
+- 기울기를 조금 바꿔도
+
+👉 오차가 더 줄어들지 않는 상태
+
+---
+
+### 🎯 핵심 해석
+
+- $x_1^T e = 0$ → 전체 이동(절편)으로 개선 불가
+- $x_2^T e = 0$ → 기울기 조정으로 개선 불가
+
+---
+
+
 ## 4. LSE의 가정
 
 특별한 가정이 없어도 LSE 자체는 계산할 수 있다. 하지만 분산, 검정, 신뢰구간을 해석하려면 추가 가정이 필요하다.
