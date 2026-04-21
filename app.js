@@ -84,6 +84,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "3",
+        title: "분류 문제",
+        notes: [
+          {
+            title: "분류 문제와 KNN 분류기",
+            href: "notes/machine-learning-basics/classification-knn.md",
+            summary: "DM_Lecure2의 25페이지 이후 내용을 바탕으로 KNN 회귀의 bias-variance, classification error, Bayes classifier, KNN classifier를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
