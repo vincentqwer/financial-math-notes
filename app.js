@@ -687,7 +687,6 @@ async function loadNote(path) {
     window.initExpectedTestMseDemos?.(noteEl);
     window.initOrthogonalResidualDemos?.(noteEl);
     window.initCurseDimensionalityDemos?.(noteEl);
-    window.initStatisticsConceptDemos?.(noteEl);
   } catch (error) {
     noteEl.innerHTML = `
       <div class="callout">

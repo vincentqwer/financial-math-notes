@@ -140,12 +140,6 @@ $$
 
 이다.
 
-## 애니메이션으로 보기
-
-아래 그림은 \(\Phi(x)\)와 오른쪽 꼬리확률 \(1-\Phi(x)\)를 면적으로 보여준다.
-
-<div class="demo-card" data-demo="normal-cdf"></div>
-
 ## 7. 표준화와 Phi
 
 일반 정규분포
