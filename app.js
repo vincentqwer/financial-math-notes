@@ -282,6 +282,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "8",
+        title: "선형모형 선택과 정규화",
+        notes: [
+          {
+            title: "선형모형 선택과 정규화",
+            href: "notes/machine-learning-basics/model-selection-regularization.md",
+            summary: "DM_Lecure6의 내용을 바탕으로 Cp/AIC/BIC, subset selection, ridge, lasso, elastic net, PCA/PCR/PLS를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
