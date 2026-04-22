@@ -293,6 +293,28 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "9",
+        title: "중간 점검 2",
+        notes: [
+          {
+            title: "중간 점검 2",
+            href: "notes/machine-learning-basics/mid-check-2.md",
+            summary: "공선성, LDA/QDA, logistic likelihood, multinomial logistic regression, k-fold CV, bootstrap 문제를 풀이합니다.",
+          },
+        ],
+      },
+      {
+        number: "10",
+        title: "중간 점검 3",
+        notes: [
+          {
+            title: "중간 점검 3",
+            href: "notes/machine-learning-basics/mid-check-3.md",
+            summary: "연습 중간고사의 참거짓, 지도학습, 회귀모형 비교, AIC, F-test, LOOCV, bootstrap 문제를 풀이합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
