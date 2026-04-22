@@ -54,7 +54,38 @@ const catalogItems = [
     number: "07",
     name: "SQLD 자격증",
     description: "데이터 모델링, SQL 기본, SQL 활용 문제를 정리합니다.",
-    notes: [],
+    notes: [
+      {
+        title: "SQLD 핵심 정리",
+        href: "notes/sqld/sql-core-summary.md",
+        summary: "SQLD 핵심정리노트의 흐름을 바탕으로 데이터 모델링, SQL 기본과 활용, 관리 명령어를 시험용 형식으로 정리합니다.",
+      },
+      {
+        title: "50회 기출 요약 정리",
+        href: "notes/sqld/sqld-exam-50.md",
+        summary: "50회 복원 기출의 데이터 모델링, 조인, 계층형 질의, ROLLUP/CUBE, DML/DDL 포인트를 정리합니다.",
+      },
+      {
+        title: "49회 기출 요약 정리",
+        href: "notes/sqld/sqld-exam-49.md",
+        summary: "49회 복원 기출의 정규화, 식별관계, NULL, 윈도우 함수, 권한, DDL 포인트를 정리합니다.",
+      },
+      {
+        title: "48회 기출 요약 정리",
+        href: "notes/sqld/sqld-exam-48.md",
+        summary: "48회 복원 기출의 모델링, SELECT 실행 순서, 윈도우 함수, 계층형 질의, 집계 함수를 정리합니다.",
+      },
+      {
+        title: "47회 기출 요약 정리",
+        href: "notes/sqld/sqld-exam-47.md",
+        summary: "47회 복원 기출의 반정규화, CUBE/ROLLUP, 조인, 서브쿼리, 집합 연산 포인트를 정리합니다.",
+      },
+      {
+        title: "46회 기출 요약 정리",
+        href: "notes/sqld/sqld-exam-46.md",
+        summary: "46회 복원 기출의 정규형, 계층형 쿼리, NULL, GROUPING SETS, 윈도우 함수 포인트를 정리합니다.",
+      },
+    ],
   },
   {
     id: "machine-learning-basics",
@@ -361,6 +392,152 @@ function enhanceMarkdownLinks(container) {
   });
 }
 
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function highlightSql(code) {
+  const keywords = [
+    "ADD",
+    "ALTER",
+    "AND",
+    "AS",
+    "ASC",
+    "BEGIN",
+    "BETWEEN",
+    "BY",
+    "CASE",
+    "CHECK",
+    "COMMIT",
+    "CONNECT",
+    "CONSTRAINT",
+    "CREATE",
+    "CROSS",
+    "DELETE",
+    "DESC",
+    "DISTINCT",
+    "DROP",
+    "ELSE",
+    "END",
+    "EXCEPT",
+    "FETCH",
+    "FIRST",
+    "FOR",
+    "FOREIGN",
+    "FROM",
+    "FULL",
+    "GRANT",
+    "GROUP",
+    "HAVING",
+    "IN",
+    "INNER",
+    "INSERT",
+    "INTERSECT",
+    "INTO",
+    "IS",
+    "JOIN",
+    "KEY",
+    "LEFT",
+    "LIKE",
+    "LIMIT",
+    "MERGE",
+    "MINUS",
+    "NATURAL",
+    "NOT",
+    "NULL",
+    "ON",
+    "OR",
+    "ORDER",
+    "OUTER",
+    "OVER",
+    "PARTITION",
+    "PRIMARY",
+    "PRIOR",
+    "REFERENCES",
+    "RENAME",
+    "REVOKE",
+    "RIGHT",
+    "ROLLBACK",
+    "ROWNUM",
+    "ROWS",
+    "SAVEPOINT",
+    "SELECT",
+    "SET",
+    "START",
+    "TABLE",
+    "THEN",
+    "TO",
+    "TRUNCATE",
+    "UNION",
+    "UPDATE",
+    "USING",
+    "VALUES",
+    "WHEN",
+    "WHERE",
+    "WITH",
+  ];
+  const functions = [
+    "AVG",
+    "CAST",
+    "COALESCE",
+    "COUNT",
+    "DENSE_RANK",
+    "LAG",
+    "LEAD",
+    "MAX",
+    "MIN",
+    "NVL",
+    "RANK",
+    "ROUND",
+    "ROW_NUMBER",
+    "SUM",
+  ];
+  const keywordPattern = keywords.join("|");
+  const functionPattern = functions.join("|");
+  const tokenPattern = new RegExp(
+    `(--.*$|'(?:''|[^'])*'|\\b(?:${functionPattern})\\b(?=\\s*\\()|\\b(?:${keywordPattern})\\b|\\b\\d+(?:\\.\\d+)?\\b|[(),.*=<>+\\-/])`,
+    "gim",
+  );
+
+  let html = "";
+  let lastIndex = 0;
+  let match;
+
+  while ((match = tokenPattern.exec(code)) !== null) {
+    const token = match[0];
+    html += escapeHtml(code.slice(lastIndex, match.index));
+
+    if (token.startsWith("--")) {
+      html += `<span class="sql-comment">${escapeHtml(token)}</span>`;
+    } else if (token.startsWith("'")) {
+      html += `<span class="sql-string">${escapeHtml(token)}</span>`;
+    } else if (/^\d/.test(token)) {
+      html += `<span class="sql-number">${escapeHtml(token)}</span>`;
+    } else if (functions.includes(token.toUpperCase())) {
+      html += `<span class="sql-function">${escapeHtml(token)}</span>`;
+    } else if (keywords.includes(token.toUpperCase())) {
+      html += `<span class="sql-keyword">${escapeHtml(token)}</span>`;
+    } else {
+      html += `<span class="sql-operator">${escapeHtml(token)}</span>`;
+    }
+
+    lastIndex = tokenPattern.lastIndex;
+  }
+
+  html += escapeHtml(code.slice(lastIndex));
+  return html;
+}
+
+function enhanceCodeBlocks(container) {
+  container.querySelectorAll("pre code.language-sql").forEach((block) => {
+    block.innerHTML = highlightSql(block.textContent);
+    block.closest("pre")?.classList.add("code-block", "code-block-sql");
+  });
+}
+
 async function loadNote(path) {
   const notePath = path || DEFAULT_NOTE;
   noteEl.className = "note-article";
@@ -382,6 +559,7 @@ async function loadNote(path) {
     renderList(reviewEl, data.review);
     renderList(relatedEl, data.related);
     enhanceMarkdownLinks(noteEl);
+    enhanceCodeBlocks(noteEl);
 
     document.querySelectorAll("[data-note-link]").forEach((link) => {
       link.classList.toggle("active", link.dataset.noteLink === notePath);

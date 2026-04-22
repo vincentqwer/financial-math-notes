@@ -327,6 +327,73 @@ a {
   font-size: 0.9em;
 }
 
+.note-article pre {
+  margin: 24px 0;
+  overflow-x: auto;
+  border: 1px solid #d8e0ee;
+  border-radius: 8px;
+  background: #101828;
+  box-shadow: 0 12px 26px rgba(16, 24, 40, 0.08);
+}
+
+.note-article pre code {
+  display: block;
+  min-width: max-content;
+  border-radius: 0;
+  background: transparent;
+  padding: 18px 20px;
+  color: #e6edf7;
+  font-family: "SFMono-Regular", "Cascadia Code", "Liberation Mono", Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+.note-article .code-block-sql {
+  position: relative;
+}
+
+.note-article .code-block-sql::before {
+  content: "SQL";
+  position: sticky;
+  left: 0;
+  display: block;
+  border-bottom: 1px solid rgba(216, 224, 238, 0.14);
+  padding: 7px 12px;
+  background: #172033;
+  color: #8ea4c8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.sql-keyword {
+  color: #8ec5ff;
+  font-weight: 800;
+}
+
+.sql-function {
+  color: #b8a5ff;
+  font-weight: 700;
+}
+
+.sql-string {
+  color: #a8e6a1;
+}
+
+.sql-number {
+  color: #ffc777;
+}
+
+.sql-comment {
+  color: #7f8da6;
+  font-style: italic;
+}
+
+.sql-operator {
+  color: #f0f5ff;
+}
+
 .note-article img {
   display: block;
   max-width: 100%;
