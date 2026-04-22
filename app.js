@@ -128,6 +128,17 @@ const catalogItems = [
           },
         ],
       },
+      {
+        number: "7",
+        title: "표본 재사용 방법",
+        notes: [
+          {
+            title: "표본 재사용 방법",
+            href: "notes/machine-learning-basics/sample-reuse-methods.md",
+            summary: "DM_Lecure5의 내용을 바탕으로 validation set, LOOCV, K-fold CV, bootstrap, time-series CV를 정리합니다.",
+          },
+        ],
+      },
     ],
     notes: [],
   },
