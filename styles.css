@@ -547,6 +547,215 @@ input[type="range"] {
   color: var(--accent);
 }
 
+.stat-demo {
+  overflow: hidden;
+  border: 1px solid #d4dbe8;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+}
+
+.stat-demo__svg {
+  display: block;
+  width: 100%;
+  min-height: 360px;
+}
+
+.stat-bg {
+  fill: #fbfcff;
+}
+
+.stat-axis {
+  stroke: #1f2937;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.stat-line,
+.stat-marker {
+  stroke: #64748b;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.stat-marker {
+  stroke-dasharray: 6 6;
+}
+
+.stat-marker--danger {
+  stroke: #ef4444;
+}
+
+.stat-dot {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  animation: stat-pop 420ms ease both;
+}
+
+.stat-dot--raw {
+  fill: #2563eb;
+}
+
+.stat-dot--mean {
+  fill: #059669;
+}
+
+.stat-dot--bad {
+  fill: #ef4444;
+}
+
+.stat-curve {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: stat-draw 720ms ease both;
+}
+
+.stat-curve--wide {
+  stroke: #94a3b8;
+}
+
+.stat-curve--narrow {
+  stroke: #059669;
+}
+
+.stat-curve--bad {
+  stroke: #ef4444;
+}
+
+.stat-area {
+  fill: rgba(37, 99, 235, 0.16);
+  stroke: none;
+  animation: stat-fade 520ms ease both;
+}
+
+.stat-tail {
+  fill: rgba(239, 68, 68, 0.2);
+  stroke: #ef4444;
+  stroke-width: 2;
+  animation: stat-fade 520ms ease both;
+}
+
+.stat-arrow {
+  fill: none;
+  stroke: #ef4444;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 7 7;
+}
+
+.stat-tangent {
+  stroke: #f59e0b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: stat-draw 620ms ease both;
+}
+
+.stat-text,
+.stat-label,
+.stat-emphasis,
+.stat-formula {
+  fill: #1f2937;
+  font-weight: 800;
+}
+
+.stat-label {
+  fill: #475569;
+}
+
+.stat-label--danger,
+.stat-emphasis {
+  fill: #dc2626;
+}
+
+.stat-formula {
+  fill: #0f172a;
+  font-family: var(--serif);
+}
+
+.stat-formula-box {
+  fill: #f8fafc;
+  stroke: #cbd5e1;
+}
+
+.stat-demo__footer {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px 18px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.stat-demo__footer strong {
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.stat-demo__footer p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.stat-demo__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.stat-demo__controls button {
+  min-height: 38px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  padding: 8px 12px;
+  color: #1f2937;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.stat-demo__controls button:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+@keyframes stat-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+    transform-origin: center;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes stat-draw {
+  from {
+    opacity: 0;
+    stroke-dasharray: 720;
+    stroke-dashoffset: 720;
+  }
+  to {
+    opacity: 1;
+    stroke-dasharray: 720;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes stat-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .expected-test-mse-card {
   padding: 16px;
   background: #fdfdfb;

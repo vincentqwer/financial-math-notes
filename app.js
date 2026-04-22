@@ -19,6 +19,118 @@ const catalogItems = [
     number: "02",
     name: "통계학원론",
     description: "기술통계, 확률분포, 추정, 검정의 기본기를 정리합니다.",
+    sections: [
+      {
+        number: "1",
+        title: "SE vs SD",
+        notes: [
+          {
+            title: "표준편차와 표준오차",
+            href: "notes/statistics-intro/standard-deviation-standard-error.md",
+            summary: "데이터의 흩어짐을 보는 SD와 추정량의 흔들림을 보는 SE를 구분합니다.",
+          },
+        ],
+      },
+      {
+        number: "2",
+        title: "Bias vs MSE",
+        notes: [
+          {
+            title: "편향, 분산, MSE",
+            href: "notes/statistics-intro/bias-variance-mse.md",
+            summary: "추정량의 평균적 오차를 bias, 전체 제곱오차를 MSE로 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "3",
+        title: "가설검정",
+        notes: [
+          {
+            title: "가설검정의 기본 구조",
+            href: "notes/statistics-intro/hypothesis-testing.md",
+            summary: "귀무가설, 대립가설, 검정통계량, 유의수준, 기각 판단의 흐름을 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "4",
+        title: "지수분포",
+        notes: [
+          {
+            title: "지수분포",
+            href: "notes/statistics-intro/exponential-distribution.md",
+            summary: "사건이 발생할 때까지의 대기시간을 모델링하는 지수분포를 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "5",
+        title: "Phi(x)",
+        notes: [
+          {
+            title: "표준정규분포의 누적확률 Phi",
+            href: "notes/statistics-intro/standard-normal-cdf.md",
+            summary: "표준정규분포에서 누적확률 Phi(x)의 의미와 대칭성을 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "6",
+        title: "p-value",
+        notes: [
+          {
+            title: "p-value",
+            href: "notes/statistics-intro/p-value.md",
+            summary: "귀무가설이 맞다고 볼 때 현재 결과가 얼마나 극단적인지 나타내는 p-value를 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "7",
+        title: "카이제곱",
+        notes: [
+          {
+            title: "카이제곱분포와 카이제곱검정",
+            href: "notes/statistics-intro/chi-square.md",
+            summary: "제곱합으로 만들어지는 카이제곱분포와 적합도, 독립성, 분산 검정을 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "8",
+        title: "가우시안 정규분포",
+        notes: [
+          {
+            title: "정규분포",
+            href: "notes/statistics-intro/normal-distribution.md",
+            summary: "평균과 분산으로 결정되는 정규분포, 표준화, 68-95-99.7 규칙을 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "9",
+        title: "우도",
+        notes: [
+          {
+            title: "우도와 최대우도추정",
+            href: "notes/statistics-intro/likelihood.md",
+            summary: "관측된 데이터를 가장 그럴듯하게 만드는 모수를 찾는 우도의 관점을 정리합니다.",
+          },
+        ],
+      },
+      {
+        number: "10",
+        title: "테일러급수",
+        notes: [
+          {
+            title: "테일러급수",
+            href: "notes/statistics-intro/taylor-series.md",
+            summary: "복잡한 함수를 한 점 주변의 다항식으로 근사하는 테일러급수를 정리합니다.",
+          },
+        ],
+      },
+    ],
     notes: [],
   },
   {
@@ -575,6 +687,7 @@ async function loadNote(path) {
     window.initExpectedTestMseDemos?.(noteEl);
     window.initOrthogonalResidualDemos?.(noteEl);
     window.initCurseDimensionalityDemos?.(noteEl);
+    window.initStatisticsConceptDemos?.(noteEl);
   } catch (error) {
     noteEl.innerHTML = `
       <div class="callout">
