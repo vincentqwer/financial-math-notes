@@ -325,6 +325,9 @@ const prerequisitesEl = document.querySelector("#prerequisites");
 const reviewEl = document.querySelector("#review");
 const relatedEl = document.querySelector("#related");
 const mathStore = [];
+const SQLD_CATEGORY_ID = "sqld";
+const sqldCategory = catalogItems.find((item) => item.id === SQLD_CATEGORY_ID);
+const sqldNotes = Array.isArray(sqldCategory?.notes) ? sqldCategory.notes : [];
 
 function parseFrontmatter(markdown) {
   if (!markdown.startsWith("---")) {
@@ -435,17 +438,17 @@ function renderCatalog() {
   noteEl.className = "catalog-view";
   noteEl.innerHTML = `
     <p class="catalog-kicker">Vincent's Math Notes</p>
-    <h1 class="catalog-title">학습 목차</h1>
+    <h1 class="catalog-title">SQLD 자격증</h1>
     <p class="catalog-description">
-      과목별로 Markdown 노트를 쌓아가는 구조입니다. 과목을 클릭하면 해당 과목의 노트 목록으로 이동합니다.
+      SQLD 정리 노트와 기출 요약만 따로 모아둔 전용 페이지입니다. 원하는 문서를 바로 열어보면 됩니다.
     </p>
-    <div class="catalog-grid">
-      ${catalogItems
+    <div class="note-list">
+      ${sqldNotes
         .map(
-          (item) => `
-            <a class="catalog-card" href="#category/${item.id}">
-              <span class="catalog-number">${item.number}</span>
-              <span class="catalog-name">${item.name}</span>
+          (note) => `
+            <a class="note-list-item" href="#${note.href}">
+              <strong>${note.title}</strong>
+              <span>${note.summary}</span>
             </a>
           `,
         )
@@ -460,6 +463,11 @@ function renderCatalog() {
 }
 
 function renderCategory(categoryId) {
+  if (categoryId !== SQLD_CATEGORY_ID) {
+    renderCatalog();
+    return;
+  }
+
   const category = catalogItems.find((item) => item.id === categoryId);
   if (!category) {
     renderCatalog();
