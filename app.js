@@ -697,10 +697,7 @@ async function loadNote(path) {
   noteEl.innerHTML = "<p>노트를 불러오는 중입니다...</p>";
 
   try {
-    const response = await fetch(notePath);
-    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-
-    const markdown = await response.text();
+    const markdown = await loadNoteMarkdown(notePath);
     const { data, body } = parseFrontmatter(markdown);
     const html = restoreMath(marked.parse(protectMath(body), { mangle: false, headerIds: true }));
 
@@ -738,6 +735,42 @@ async function loadNote(path) {
       </div>
     `;
   }
+}
+
+async function loadNoteMarkdown(notePath) {
+  try {
+    const response = await fetch(notePath);
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    return await response.text();
+  } catch (error) {
+    if (window.location.protocol !== "file:") {
+      throw error;
+    }
+
+    return await loadNoteMarkdownFromFile(notePath, error);
+  }
+}
+
+function loadNoteMarkdownFromFile(notePath, originalError) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("GET", notePath, true);
+    request.overrideMimeType("text/plain; charset=utf-8");
+
+    request.onload = () => {
+      if (request.status === 0 || (request.status >= 200 && request.status < 300)) {
+        resolve(request.responseText);
+        return;
+      }
+      reject(new Error(`${request.status} ${request.statusText}`));
+    };
+
+    request.onerror = () => {
+      reject(originalError);
+    };
+
+    request.send();
+  });
 }
 
 function currentNoteFromHash() {
